@@ -227,13 +227,13 @@ void process_control_logic() {
 
 
     // Verificar si se completaron las cantidades de A y B SE PONE EL DOBLE  DEL VALOR PARA CONTAR FLACO DE SUBIDA Y BAJADA
-    if (proximity_A_count >= 3) {
+    if (proximity_A_count >= 30) {
       // Desactivar señales de control digital
       PORTC &= ~(1 << PORTC3);
       IngredienteA = 1;
     }
 
-    if (proximity_B_count >= 3) {  //SE PONE EL DOBLE  DEL VALOR PARA CONTAR FLACO DE SUBIDA Y BAJADA
+    if (proximity_B_count >= 10) {  //SE PONE EL DOBLE  DEL VALOR PARA CONTAR FLACO DE SUBIDA Y BAJADA
       // Desactivar señales de control digital
       PORTC &= ~(1 << PORTC2);
       IngredienteB = 1;
@@ -303,7 +303,7 @@ ISR(TIMER1_COMPA_vect) {
     // Verificar si ha transcurrido 1 minuto
     // las unidades de comparacion equivale a 0.5s por lo tanto para 60s la unidad es 120
     // Detener el motor y vaciar el tanque
-    if (mixing > 10) {
+    if (mixing > 120) {
       mixing = 0;
       set_pwm_duty_cycle(0);   // Detener el motor
       set_servo_position(26);  // Abrir la compuerta
@@ -316,7 +316,7 @@ ISR(TIMER1_COMPA_vect) {
 
     seconds++;
     PORTB |= (1 << PORTB2);  //enciende piloto de mezclado
-    if (seconds > 10) {
+    if (seconds > 90) {
       PORTB &= ~(1 << PORTB2);
       if (buzz_count < BUZZ_COUNT_MAX * 2) {  // Si aún no se ha alcanzado el número máximo de encendidos/apagados
         BUZZER_STATE = !BUZZER_STATE;         // Invertir el estado del zumbador
